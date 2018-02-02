@@ -1,0 +1,43 @@
+<html>
+<head><title>Import xlsx</title></head>
+<body>
+
+<script lang="javascript" src="xlsx.full.min.js"></script>
+
+<script>
+function dostuff() {
+	parse_xlsx();
+}
+
+function parse_xlsx() {
+  var file = document.getElementById("input_file").files[0];
+  
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var data = e.target.result;
+    var workbook = XLSX.read(data, {type: 'binary'});
+
+    /* DO SOMETHING WITH workbook HERE */
+	var first_sheet_name = workbook.SheetNames[0];
+	var address_of_cell = 'A1';
+
+	/* Get worksheet */
+	var worksheet = workbook.Sheets[first_sheet_name];
+
+	/* Find desired cell */
+	var desired_cell = worksheet[address_of_cell];
+
+	/* Get the value */
+	var desired_value = (desired_cell ? desired_cell.v : undefined);
+
+	window.alert("A1: " + desired_value);
+  };
+  reader.readAsBinaryString(file); 
+}
+</script>
+
+<input type="file" id="input_file"></input>
+<input type="submit" onclick="dostuff();"></input>
+
+</body>
+</html>
